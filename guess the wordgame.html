@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the word game</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: rgb(14, 174, 14);
+            line-height: 15vh;
+            width: 100wh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 0px 2px 3px red;
+        }
+
+        section {
+            height: 85vh;
+            background-color: rgb(100 200 100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gamesec {
+            width: 64%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* border: 2px solid red; */
+            box-shadow: 0px 5px 10px black;
+            ;
+            height: 55vh;
+            background-color: #2b9e29;
+        }
+
+        input {
+            border-radius: 5px;
+            height: 2rem;
+            width: 18rem;
+            margin: 0rem 0rem 0.5rem 0rem;
+            border-style: none;
+            display: none;
+
+        }
+
+        h3 {
+            line-height: 2rem;
+        }
+
+        button {
+            width: 9rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            height: 2rem;
+            cursor: pointer;
+            border-style: none;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+            transition-duration: 0.5s;
+
+        }
+
+        .btn:hover,
+        .btn:active,
+        .btn:focus {
+            width: 12rem;
+            font-size: 1.3rem;
+            padding: 0px 7px;
+        }
+
+        @media only screen and (max-width: 485px) {
+            input {
+                width: 10rem;
+            }
+
+            .btn:hover,.btn:active,.btn:focus {
+                width: 8rem;
+            }
+            .btn{
+                width: 7rem;
+            }
+            h3{
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Guess the word game</h1>
+        </header>
+        <section>
+            <div class="gamesec">
+                <h3 class="msg"></h3>
+                <input type="text" class="hidden">
+                <button class="btn">Click Here To Start</button>
+            </div>
+        </section>
+    </div>
+    <script>
+        const guess = document.querySelector('.hidden');
+        const btn = document.querySelector('.btn');
+        const msg = document.querySelector('.msg');
+
+        const arr = ['git', 'c++', 'python', 'java', 'react', 'mern', 'nodejs', 'expressjs', 'mongodb', 'git', 'github', 'html', 'javascript', 'angular', 'bootstrap', 'tailwind']
+
+        let msgfun = () => {
+            let ranword = Math.floor(Math.random() * arr.length)
+            let newwrd = arr[ranword]
+            return newwrd
+        }
+        let scrumbleword = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                let temp = array[i]
+                // console.log(array[i])
+                let j = Math.floor(Math.random() * i)
+                // console.log(i)
+                // console.log(j)
+                array[i] = array[j]
+                array[j] = temp
+            }
+            return array
+        }
+        let createword;
+        let srmword
+        let play = false;
+        btn.addEventListener('click', () => {
+            if (!play) {
+                play = true;
+                console.log('click');
+                btn.innerHTML = 'Guess';
+                guess.style.display = "block"
+                createword = msgfun()
+                srmword = scrumbleword(createword.split(""))
+                // console.log(srmword)
+                msg.innerHTML = srmword.join("")
+
+            }
+            else {
+                let checkwrd = guess.value
+                if (checkwrd === createword) {
+                    msg.innerHTML = `Awesome, it's Correct. It is "${createword}"`
+                    play = false;
+                    btn.innerHTML = 'Start Again'
+                    guess.value = ""
+                    guess.style.display = "none"
+
+
+                }
+                else {
+                    msg.innerHTML = `Sorry, It's not correct. Plz try again "${srmword.join("")}"`;
+                    btn.innerHTML = 'Try Again';
+                    guess.value = ""
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
